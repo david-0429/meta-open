@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-
+import pdb
 
 class MetaSampler(torch.utils.data.sampler.Sampler):
     def __init__(self, dataset, opts_runtime, train=True):
@@ -16,7 +16,7 @@ class MetaSampler(torch.utils.data.sampler.Sampler):
         self.fold = opts_runtime.fold
         self.train = train
 
-        self.n_sample_list = dataset.n_sample_list
+        self.n_sample_list = torch.arange(50001)
         if train:
             self.n_cls = 100 #dataset.cls_num
             self.base_cls = 0
@@ -24,7 +24,7 @@ class MetaSampler(torch.utils.data.sampler.Sampler):
             for i in range(self.n_cls):
                 self.idx_list.append(np.arange(self.n_sample_list[:i].sum(), self.n_sample_list[:i+1].sum()))
         else:
-            self.n_cls = dataset.open_cls_num
+            self.n_cls = 5 #dataset.open_cls_num
             self.base_cls = 100 #dataset.cls_num
             self.idx_list = []
             for i in range(self.base_cls):
@@ -44,6 +44,7 @@ class MetaSampler(torch.utils.data.sampler.Sampler):
                 samples = np.random.permutation(n_sample)[:self.k_shot + self.m_query]
                 supports = samples[:self.k_shot]
                 querys = samples[self.k_shot:]
+                pdb.set_trace()
                 batch_s[self.k_shot*c:self.k_shot*(c+1)] = torch.from_numpy(supports) + self.n_sample_list[:cls_fsl[c]+self.base_cls].sum()
                 batch_q[self.m_query*c:self.m_query*(c+1)] = torch.from_numpy(querys) + self.n_sample_list[:cls_fsl[c]+self.base_cls].sum()
             for c in range(self.open_cls):
