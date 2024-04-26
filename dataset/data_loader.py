@@ -42,7 +42,7 @@ def data_loader(opts, opts_runtime, split):
         if data.open_samples > 0:
             opts.logger('\t\tFind {:d} open samples'.format(data.open_samples))
 
-    elif opts.data.name == 'cifar10':
+    elif opts.data.name == 'cifar100':
         train_transform = transforms.Compose(
                   [transforms.ToTensor(),
                    transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4),
@@ -53,12 +53,12 @@ def data_loader(opts, opts_runtime, split):
                   [transforms.ToTensor(),
                   transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
-        trainset = torchvision.datasets.CIFAR10(root='./cifar10', train=True,
+        trainset = torchvision.datasets.CIFAR100(root='dataset/cifar10', train=True,
                                         download=True, transform=train_transform)
         data = torch.utils.data.DataLoader(trainset, batch_size=opts.train.batch_size,
                                           shuffle=True, num_workers=2)
 
-        testset = torchvision.datasets.CIFAR10(root='./cifar10', train=False,
+        testset = torchvision.datasets.CIFAR100(root='dataset/cifar10', train=False,
                                        download=True, transform=val_transform)
         testloader = torch.utils.data.DataLoader(testset, batch_size=opts.train.batch_size,
                                          shuffle=False, num_workers=2)
