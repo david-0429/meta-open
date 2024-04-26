@@ -1,5 +1,5 @@
 data:
-    name: 'cifar10'
+    name: 'cifar100'
     im_size: 84
     augment: 1
     augment_val: 0
