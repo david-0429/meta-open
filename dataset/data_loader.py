@@ -1,3 +1,7 @@
+import torch
+import torchvision
+import torchvision.transforms as transforms
+
 from torch.utils.data import DataLoader
 
 from dataset.miniimagenet import miniImagenet
@@ -38,18 +42,24 @@ def data_loader(opts, opts_runtime, split):
         if data.open_samples > 0:
             opts.logger('\t\tFind {:d} open samples'.format(data.open_samples))
 
-    elif opts.dataset.name == 'cifar10':
-        transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    elif opts.data.name == 'cifar10':
+        train_transform = transforms.Compose(
+                  [transforms.ToTensor(),
+                   transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4),
+                   transforms.RandomHorizontalFlip(0.5),
+                   transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+    
+        val_transform = transforms.Compose(
+                  [transforms.ToTensor(),
+                  transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
-        trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
-                                        download=True, transform=transform)
-        trainloader = torch.utils.data.DataLoader(trainset, batch_size=opts.train.batch_size,
+        trainset = torchvision.datasets.CIFAR10(root='./cifar10', train=True,
+                                        download=True, transform=train_transform)
+        data = torch.utils.data.DataLoader(trainset, batch_size=opts.train.batch_size,
                                           shuffle=True, num_workers=2)
 
-        testset = torchvision.datasets.CIFAR10(root='./data', train=False,
-                                       download=True, transform=transform)
+        testset = torchvision.datasets.CIFAR10(root='./cifar10', train=False,
+                                       download=True, transform=val_transform)
         testloader = torch.utils.data.DataLoader(testset, batch_size=opts.train.batch_size,
                                          shuffle=False, num_workers=2)
 
