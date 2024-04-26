@@ -1,5 +1,5 @@
 data:
-    name: 'miniimagenet'
+    name: 'cifar10'
     im_size: 84
     augment: 1
     augment_val: 0
@@ -10,7 +10,7 @@ model:
 io:
     exp_name: 'default'
 ctrl:
-    gpu_id: 2
+    gpu_id: 0
     ep_save: 500
     ep_vis_loss: 100
     ep_val: 500
