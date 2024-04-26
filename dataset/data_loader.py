@@ -39,7 +39,19 @@ def data_loader(opts, opts_runtime, split):
             opts.logger('\t\tFind {:d} open samples'.format(data.open_samples))
 
     elif opts.dataset.name == 'cifar10':
-        raise NameError('cifar10 not implemented.')
+        transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+
+        trainset = torchvision.datasets.CIFAR10(root='./data', train=True,
+                                        download=True, transform=transform)
+        trainloader = torch.utils.data.DataLoader(trainset, batch_size=opts.train.batch_size,
+                                          shuffle=True, num_workers=2)
+
+        testset = torchvision.datasets.CIFAR10(root='./data', train=False,
+                                       download=True, transform=transform)
+        testloader = torch.utils.data.DataLoader(testset, batch_size=opts.train.batch_size,
+                                         shuffle=False, num_workers=2)
 
     else:
         raise NameError('Unknown dataset ({})!'.format(opts.dataset.name))
