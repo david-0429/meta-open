@@ -18,16 +18,16 @@ class MetaSampler(torch.utils.data.sampler.Sampler):
 
         self.n_sample_list = dataset.n_sample_list
         if train:
-            self.n_cls = dataset.cls_num
+            self.n_cls = 100 #dataset.cls_num
             self.base_cls = 0
             self.idx_list = []
             for i in range(self.n_cls):
                 self.idx_list.append(np.arange(self.n_sample_list[:i].sum(), self.n_sample_list[:i+1].sum()))
         else:
             self.n_cls = dataset.open_cls_num
-            self.base_cls = dataset.cls_num
+            self.base_cls = 100 #dataset.cls_num
             self.idx_list = []
-            for i in range(dataset.cls_num):
+            for i in range(self.base_cls):
                 self.idx_list.append(np.arange(self.n_sample_list[:i].sum(), self.n_sample_list[:i+1].sum()))
 
     def __iter__(self):
