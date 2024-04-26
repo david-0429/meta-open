@@ -9,7 +9,7 @@ class Config(object):
 
     # DEFAULT VALUES
     data = AttrDict()
-    data.name = 'cifar10'  # 'miniimagenet', 'cifar10' ('cifar10' not implemented)
+    data.name = 'cifar100'  # 'miniimagenet', 'cifar10' ('cifar10' not implemented)
     data.im_size = 224
     # 0, 1, 2
     data.augment = 0
